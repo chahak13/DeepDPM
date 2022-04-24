@@ -12,7 +12,7 @@ from pytorch_lightning.loggers import NeptuneLogger
 import numpy as np
 
 from src.AE_ClusterPipeline import AE_ClusterPipeline
-from src.datasets import MNIST, REUTERS
+from src.datasets import MNIST, REUTERS, CIFAR10
 from src.embbeded_datasets import embbededDataset
 from src.clustering_models.clusternet_modules.clusternetasmodel import ClusterNetModel
 
@@ -157,6 +157,8 @@ if __name__ == "__main__":
         data = MNIST(args)
     elif args.dataset == "reuters10k":
         data = REUTERS(args, how_many=10000)
+    elif args.dataset == "cifar10":
+        data = CIFAR10(args)
     else:
         # Used for ImageNet-50
         data = embbededDataset(args)

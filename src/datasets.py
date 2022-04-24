@@ -32,12 +32,12 @@ class MyDataset:
             self.get_train_data(),
             batch_size=self.args.batch_size,
             shuffle=True,
-            num_workers=6,
+            num_workers=2,
         )
         return train_loader
 
     def get_test_loader(self):
-        test_loader = torch.utils.data.DataLoader(self.get_test_data(), batch_size=self.args.batch_size, shuffle=False, num_workers=6)
+        test_loader = torch.utils.data.DataLoader(self.get_test_data(), batch_size=self.args.batch_size, shuffle=False, num_workers=2)
         return test_loader
 
     def get_loaders(self):
@@ -55,6 +55,19 @@ class MNIST(MyDataset):
 
     def get_test_data(self):
         return datasets.MNIST(self.data_dir, train=False, transform=self.transformer)
+
+class CIFAR10(MyDataset):
+    def __init__(self, args):
+        super().__init__(args)
+        self.transformer = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        self._input_dim = 32 * 32 * 3
+
+    def get_train_data(self):
+        return datasets.CIFAR10(self.data_dir, train=True, download=True, transform=self.transformer)
+
+    def get_test_data(self):
+        return datasets.CIFAR10(self.data_dir, train=False, transform=self.transformer)
+
 class STL10(MyDataset):
     def __init__(self, args, split="train"):
         super().__init__(args)
