@@ -207,7 +207,7 @@ if __name__ == "__main__":
     DeepDPM.to(device=device)
     # evaluate last model
     for i, dataset in enumerate([data.get_train_data(), data.get_test_data()]):
-        data_, labels_ = dataset.tensors[0], dataset.tensors[1].numpy()
+        data_, labels_ = torch.as_tensor(dataset.data).permute(0, 3, 1, 2)/255, np.asarray(dataset.targets)
         pred = DeepDPM(data_.to(device=device)).argmax(axis=1).cpu().numpy()
 
         acc = np.round(cluster_acc(labels_, pred), 5)
